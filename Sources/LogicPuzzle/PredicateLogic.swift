@@ -20,12 +20,12 @@ public class PredicateLogic {
         { world in lhs(world) && rhs(world) }
     }
 
-    public static func agent(_ agentId: Agent.ID, hasPredicate predicate: Predicate) -> LE {
-        { world in world.agents[agentId]?.hasPredicate(predicate) ?? false }
+    public static func agent(_ agentId: Agent.ID, hasTag tag: AnyTag) -> LE {
+        { world in world.agents[agentId]?.hasTag(tag) ?? false }
     }
 
-    public static func agent(_ agent: Agent, hasPredicate predicate: Predicate) -> LE {
-        self.agent(agent.id, hasPredicate: predicate)
+    public static func agent(_ agent: Agent, hasTag tag: AnyTag) -> LE {
+        self.agent(agent.id, hasTag: tag)
     }
 
     public static func biConditional(_ lhs: @escaping LE, _ rhs: @escaping LE) -> LE {

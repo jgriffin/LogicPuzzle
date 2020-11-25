@@ -8,7 +8,8 @@
 import Foundation
 
 public struct AnyTag: Tagging, Hashable {
-    private let box: _AnyTagBase
+    internal let box: _AnyTagBase
+
     public init<Concrete: Tagging & Hashable>(_ concrete: Concrete) {
         box = _AnyTagBox(concrete)
     }
@@ -18,14 +19,12 @@ public struct AnyTag: Tagging, Hashable {
     public func hash(into hasher: inout Hasher) { box.hash(into: &hasher) }
     public func isEqualTo(_ other: Tagging) -> Bool { box.isEqualTo(other) }
 
-    public static func ==(lhs: AnyTag, rhs: AnyTag) -> Bool {
+    public static func == (lhs: AnyTag, rhs: AnyTag) -> Bool {
         lhs.isEqualTo(rhs)
     }
-
-    public func unboxed() -> Tagging { box.unboxed() }
 }
 
-private final class _AnyTagBox<Concrete: Tagging & Hashable>: _AnyTagBase {
+internal final class _AnyTagBox<Concrete: Tagging & Hashable>: _AnyTagBase {
     private let concrete: Concrete
     init(_ concrete: Concrete) {
         self.concrete = concrete
@@ -38,9 +37,9 @@ private final class _AnyTagBox<Concrete: Tagging & Hashable>: _AnyTagBase {
     override func unboxed() -> Tagging { concrete }
 }
 
-private class _AnyTagBase: Tagging {
+internal class _AnyTagBase: Tagging {
     var description: String { fatalError() }
-    func isEqualTo(_ other: Tagging) -> Bool { fatalError() }
-    func hash(into hasher: inout Hasher) { fatalError() }
+    func isEqualTo(_: Tagging) -> Bool { fatalError() }
+    func hash(into _: inout Hasher) { fatalError() }
     func unboxed() -> Tagging { fatalError() }
 }

@@ -5,8 +5,8 @@
 //  Created by Griff on 11/24/20.
 //
 
-import XCTest
 @testable import LogicPuzzle
+import XCTest
 
 final class WorldsBuilderTests: XCTestCase {
     func testNoAgents() {
@@ -17,7 +17,7 @@ final class WorldsBuilderTests: XCTestCase {
     func testSingleAgentNoVariation() {
         let agent99 = Agent("99")
 
-        let agent99Variations = agent99.variationsFrom([Predicate]())
+        let agent99Variations = agent99.variationsFrom([])
 
         let worlds = WorldsBuilder.worldsWith(agentVariations: [agent99Variations])
 
@@ -29,15 +29,15 @@ final class WorldsBuilderTests: XCTestCase {
 
     func testSingleAgentOneVariation() {
         let agent99 = Agent("99")
-        let predicate = Predicate("only")
+        let tag = "only".erasedTag
 
-        let agent99Variations = agent99.variationsFrom([predicate])
+        let agent99Variations = agent99.variationsFrom([tag])
 
         let worlds = WorldsBuilder.worldsWith(agentVariations: [agent99Variations])
 
         let check: [World] = [
             World(agents: [agent99]),
-            World(agents: [agent99.with([predicate])]),
+            World(agents: [agent99.addingTag(tag)]),
         ]
 
         XCTAssertEqual(worlds, check)
@@ -46,10 +46,10 @@ final class WorldsBuilderTests: XCTestCase {
     func testTwoAgents() {
         let agent99 = Agent("99")
         let max = Agent("Max")
-        let predicate = Predicate("only")
+        let tag = "only".erasedTag
 
-        let agent99Variations = agent99.variationsFrom([predicate])
-        let maxVariations = max.variationsFrom([predicate])
+        let agent99Variations = agent99.variationsFrom([tag])
+        let maxVariations = max.variationsFrom([tag])
 
         let worlds = WorldsBuilder.worldsWith(agentVariations: [
             agent99Variations,
@@ -58,9 +58,9 @@ final class WorldsBuilderTests: XCTestCase {
 
         let check: [World] = [
             World(agents: [agent99, max]),
-            World(agents: [agent99.with([predicate]), max]),
-            World(agents: [agent99, max.with([predicate])]),
-            World(agents: [agent99.with([predicate]), max.with([predicate])]),
+            World(agents: [agent99.addingTag(tag), max]),
+            World(agents: [agent99, max.addingTag(tag)]),
+            World(agents: [agent99.addingTag(tag), max.addingTag(tag)]),
         ]
 
         XCTAssertEqual(worlds, check)

@@ -18,14 +18,14 @@ final class RiddleOfScheherazadeTests: XCTestCase {
     typealias PL = PredicateLogic
 
     func testACase() {
-        let pTruthTellerFamily = Predicate("truthTellerFamily")
-        let pMarried = Predicate("married")
+        let pTruthTellerFamily = "truthTellerFamily".erasedTag
+        let pMarried = "married".erasedTag
 
         let bahman = Agent("Bahman", [pTruthTellerFamily, pMarried])
         let perviz = Agent("Perviz", [pMarried])
 
-        let ttBahman = PL.agent(bahman, hasPredicate: pTruthTellerFamily)
-        let ttPerviz = PL.agent(perviz, hasPredicate: pTruthTellerFamily)
+        let ttBahman = PL.agent(bahman, hasTag: pTruthTellerFamily)
+        let ttPerviz = PL.agent(perviz, hasTag: pTruthTellerFamily)
         let sameFamily = PL.biConditional(ttBahman, ttPerviz)
 
         let world = World(agents: [bahman, perviz])

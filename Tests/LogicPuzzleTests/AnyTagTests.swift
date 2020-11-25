@@ -25,20 +25,28 @@ final class AnyTagTests: XCTestCase {
     }
 
     func testAnySimpleTag() {
-        XCTAssertEqual(simple1.erased(), simple1.erased())
-        XCTAssertNotEqual(simple1.erased(), simple2.erased())
-        XCTAssertEqual(simple1.erased(), SimpleTag(name: "one").erased())
+        XCTAssertEqual(simple1.erasedTag, simple1.erasedTag)
+        XCTAssertNotEqual(simple1.erasedTag, simple2.erasedTag)
+        XCTAssertEqual(simple1.erasedTag, SimpleTag(name: "one").erasedTag)
     }
 
     func testAnyStringTag() {
-        XCTAssertEqual(string1.erased(), "one".erased())
-        XCTAssertNotEqual(string1.erased(), "two".erased())
+        XCTAssertEqual(string1.erasedTag, "one".erasedTag)
+        XCTAssertNotEqual(string1.erasedTag, "two".erasedTag)
     }
-    
+
+    func testVariedTagging() {
+        XCTAssertTrue(string1.isEqualTo("one"))
+        XCTAssertTrue(string1.isEqualTo("one".erasedTag))
+
+        XCTAssertFalse(simple1.isEqualTo("two"))
+        XCTAssertFalse(simple1.isEqualTo("two".erasedTag))
+    }
+
     func testHashing() {
-        let set1 = Set(arrayLiteral: string1.erased())
-        XCTAssertTrue(set1.contains(string1.erased()))
-        XCTAssertTrue(set1.contains("one".erased()))
-        XCTAssertFalse(set1.contains("two".erased()))
+        let set1 = Set(arrayLiteral: string1.erasedTag)
+        XCTAssertTrue(set1.contains(string1.erasedTag))
+        XCTAssertTrue(set1.contains("one".erasedTag))
+        XCTAssertFalse(set1.contains("two".erasedTag))
     }
 }

@@ -20,12 +20,8 @@ extension World: CustomStringConvertible {
         agents.values.map(\.description).joined(separator: "\n")
     }
 
-    public func agentsWith(_ predicate: Predicate.ID) -> [Agent] {
-        agents.values.filter { $0.hasPredicate(predicate) }
-    }
-
-    public func agentsWith(_ predicate: Predicate) -> [Agent] {
-        agentsWith(predicate.id)
+    public func agentsWith(_ tag: AnyTag) -> [Agent] {
+        agents.values.filter { $0.hasTag(tag) }
     }
 }
 

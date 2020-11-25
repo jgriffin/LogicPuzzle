@@ -11,47 +11,68 @@ public struct Agent: Identifiable, Hashable, CustomStringConvertible {
     public typealias ID = String
 
     public let id: ID
-    public let predicates: Set<Predicate.ID>
+    public let tags: Set<AnyTag>
 
-    public init(_ id: ID,
-                _ predicates: [Predicate.ID] = [])
+    public init<S: Sequence>(_ id: ID,
+                             _ tags: S) where S.Element == AnyTag
     {
         self.id = id
-        self.predicates = Set(predicates)
+        self.tags = Set(tags)
     }
 
-    public func hasPredicate(_ predicateId: Predicate.ID) -> Bool {
-        predicates.contains(predicateId)
-    }
-
-    public func with(_ predicates: [Predicate.ID]) -> Agent {
-        Agent(id, predicates)
-    }
-
-    public var description: String {
-        "agent: \(id) predicates: \(predicates.sorted().joined(separator: ","))"
-    }
-
-    public static func == (lhs: Agent, rhs: Agent) -> Bool {
-        lhs.id == rhs.id &&
-            lhs.predicates == rhs.predicates
+    public init(_ id: ID) {
+        self.init(id, [])
     }
 }
 
 extension Agent {
-    // MARK: Full Predicate conveniences
+    public func hasTag<T: Tagging>(_ tag: T) -> Bool where T: Hashable {
+        tags.contains(tag.erasedTag)
+    }
 
-    public init(_ id: ID,
-                _ predicates: [Predicate])
+    public func tagsWhere(_ filter: (AnyTag) -> Bool) -> [AnyTag] {
+        tags.filter(filter)
+    }
+
+    public func tagsOfType<T: Tagging>(_: T.Type = T.self) -> [T] {
+        tags.compactMap { $0 as? T }
+    }
+
+    public func tagsOfTypeWhere<T: Tagging>(_: T.Type = T.self,
+                                            _ filter: (T) -> Bool) -> [T]
     {
-        self.init(id, predicates.map(\.id))
+        tags.compactMap {
+            guard let t = $0 as? T,
+                filter(t)
+            else {
+                return nil
+            }
+            return t
+        }
     }
 
-    public func hasPredicate(_ predicate: Predicate) -> Bool {
-        predicates.contains(predicate.id)
+    public func tagsofType(_ filter: (AnyTag) -> Bool) -> [AnyTag] {
+        tags.filter(filter)
     }
 
-    public func with(_ predicates: [Predicate]) -> Agent {
-        Agent(id, predicates.map(\.id))
+    public func settingTags<S: Sequence>(_ tags: S) -> Agent where S.Element == AnyTag {
+        .init(id, tags)
+    }
+
+    public func addingTags<S: Sequence>(_ tags: S) -> Agent where S.Element == AnyTag {
+        .init(id, self.tags.union(tags))
+    }
+
+    public func addingTag(_ tag: AnyTag) -> Agent {
+        addingTags([tag])
+    }
+
+    public var description: String {
+        "agent: \(id) tags: \(tags.map { "\($0)" }.sorted().joined(separator: ","))"
+    }
+
+    public static func == (lhs: Agent, rhs: Agent) -> Bool {
+        lhs.id == rhs.id &&
+            lhs.tags == rhs.tags
     }
 }
