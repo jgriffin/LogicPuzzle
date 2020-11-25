@@ -19,12 +19,12 @@ final class AgentVariationsTests: XCTestCase {
 
     func testVariationsSingle() {
         let agent = Agent("test")
-        let tag = "onlyPredicate".erasedTag
+        let tag = "onlyPredicate"
 
         let variations = agent.variationsFrom([tag])
 
         let check: [Agent] = [
-            agent.settingTags([]),
+            agent.settingTags([AnyTag]()),
             agent.settingTags([tag]),
         ]
 
@@ -39,7 +39,7 @@ final class AgentVariationsTests: XCTestCase {
         let variations = agent.variationsFrom([tag1, tag2])
 
         let check: [Agent] = [
-            agent.settingTags([]),
+            agent.settingTags([AnyTag]()),
             agent.settingTags([tag1]),
             agent.settingTags([tag2]),
             agent.settingTags([tag1, tag2]),

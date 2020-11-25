@@ -12,6 +12,8 @@ public protocol Tagging {
     func hash(into hasher: inout Hasher)
 }
 
+public typealias HashableTag = Tagging & Hashable
+
 extension Tagging where Self: Hashable {
     public func isEqualTo(_ other: Tagging) -> Bool {
         guard let otherTag = other.unerasedTag as? Self else { return false }

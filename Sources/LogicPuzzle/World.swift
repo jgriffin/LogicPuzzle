@@ -10,7 +10,7 @@ import Foundation
 public struct World {
     public let agents: [Agent.ID: Agent]
 
-    public init(agents: [Agent]) {
+    public init(_ agents: [Agent]) {
         self.agents = Dictionary(uniqueKeysWithValues: agents.map { ($0.id, $0) })
     }
 }
@@ -20,20 +20,13 @@ extension World: CustomStringConvertible {
         agents.values.map(\.description).joined(separator: "\n")
     }
 
-    public func agentsWith(_ tag: AnyTag) -> [Agent] {
-        agents.values.filter { $0.hasTag(tag) }
+    public func agentsWith<T: HashableTag>(_ tag: T) -> [Agent] {
+        let anyTag = tag.erasedTag
+        return agents.values.filter { $0.hasTag(anyTag) }
     }
 
-    public func agentsWith<T: Tagging & Hashable>(_ tag: T) -> [Agent] {
-        agents.values.filter { $0.hasTag(tag.erasedTag) }
-    }
-
-    public func onlyAgentWith(_ tag: AnyTag) throws -> Agent {
+    public func onlyAgentWith<T: HashableTag>(_ tag: T) throws -> Agent {
         try agentsWith(tag).only()
-    }
-
-    public func onlyAgentWith<T: Tagging & Hashable>(_ tag: T) throws -> Agent {
-        try onlyAgentWith(tag.erasedTag)
     }
 }
 

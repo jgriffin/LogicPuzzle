@@ -12,7 +12,7 @@ public struct WorldsBuilder {
     public static func worldsWith(agentVariations: [[Agent]]) -> [World] {
         agentWorldsWith(agentVariations[...],
                         onto: [])
-            .map { World(agents: $0) }
+            .map { World($0) }
     }
 
     typealias AgentVariations = ArraySlice<[Agent]>

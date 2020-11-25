@@ -15,7 +15,7 @@ final class WorldsBuilderTests: XCTestCase {
         let worlds = WorldsBuilder.worldsWith(agentVariations: [agent99Variations])
 
         let check: [World] = [
-            World(agents: [agent99]),
+            World([agent99]),
         ]
         XCTAssertEqual(worlds, check)
     }
@@ -29,8 +29,8 @@ final class WorldsBuilderTests: XCTestCase {
         let worlds = WorldsBuilder.worldsWith(agentVariations: [agent99Variations])
 
         let check: [World] = [
-            World(agents: [agent99]),
-            World(agents: [agent99.addingTag(tag)]),
+            World([agent99]),
+            World([agent99.addingTag(tag)]),
         ]
 
         XCTAssertEqual(worlds, check)
@@ -50,10 +50,10 @@ final class WorldsBuilderTests: XCTestCase {
         ])
 
         let check: [World] = [
-            World(agents: [agent99, max]),
-            World(agents: [agent99.addingTag(tag), max]),
-            World(agents: [agent99, max.addingTag(tag)]),
-            World(agents: [agent99.addingTag(tag), max.addingTag(tag)]),
+            World([agent99, max]),
+            World([agent99.addingTag(tag), max]),
+            World([agent99, max.addingTag(tag)]),
+            World([agent99.addingTag(tag), max.addingTag(tag)]),
         ]
 
         XCTAssertEqual(worlds, check)

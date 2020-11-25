@@ -28,7 +28,7 @@ final class RiddleOfScheherazadeTests: XCTestCase {
         let ttPerviz = PL.agent(perviz, hasTag: pTruthTellerFamily)
         let sameFamily = PL.biConditional(ttBahman, ttPerviz)
 
-        let world = World(agents: [bahman, perviz])
+        let world = World([bahman, perviz])
 
         let test = sameFamily(world)
         print(test ? "same family" : "different famlies")

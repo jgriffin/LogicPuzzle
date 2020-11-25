@@ -11,7 +11,7 @@ final class WorldTagsTests: XCTestCase {
     let other = Agent("other", ["secret".erasedTag])
 
     func testAgentsWithTag() {
-        let world = World(agents: [agent99, max, other])
+        let world = World([agent99, max, other])
 
         XCTAssertEqual(world.agentsWith("secret").count, 3)
         XCTAssertEqual(try! world.onlyAgentWith(Name.nineNine), agent99)

@@ -19,4 +19,8 @@ extension Agent {
             Agent(self.id, tags)
         }
     }
+
+    public func variationsFrom<T: HashableTag>(_ tags: [T]) -> [Agent] {
+        variationsFrom(tags.map(\.erasedTag))
+    }
 }

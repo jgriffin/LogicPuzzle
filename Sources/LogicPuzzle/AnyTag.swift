@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct AnyTag: Tagging, Hashable {
+public struct AnyTag: Tagging, Hashable, CustomStringConvertible {
     internal let box: _AnyTagBase
 
-    public init<Concrete: Tagging & Hashable>(_ concrete: Concrete) {
+    public init<Concrete: HashableTag>(_ concrete: Concrete) {
         box = _AnyTagBox(concrete)
     }
 
@@ -24,7 +24,7 @@ public struct AnyTag: Tagging, Hashable {
     }
 }
 
-internal final class _AnyTagBox<Concrete: Tagging & Hashable>: _AnyTagBase {
+internal final class _AnyTagBox<Concrete: HashableTag>: _AnyTagBase {
     private let concrete: Concrete
     init(_ concrete: Concrete) {
         self.concrete = concrete
