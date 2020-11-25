@@ -1,10 +1,3 @@
-//
-//  WordsBuilderTests.swift
-//  LogicPuzzle
-//
-//  Created by Griff on 11/24/20.
-//
-
 @testable import LogicPuzzle
 import XCTest
 

@@ -23,6 +23,10 @@ public struct Agent: Identifiable, Hashable, CustomStringConvertible {
     public init(_ id: ID) {
         self.init(id, [])
     }
+
+    public var description: String {
+        "agent: \(id) tags: \(tags.map { "\($0)" }.sorted().joined(separator: ","))"
+    }
 }
 
 extension Agent {
@@ -30,30 +34,29 @@ extension Agent {
         tags.contains(tag.erasedTag)
     }
 
-    public func tagsWhere(_ filter: (AnyTag) -> Bool) -> [AnyTag] {
-        tags.filter(filter)
-    }
+    // MARK: tags of type
 
     public func tagsOfType<T: Tagging>(_: T.Type = T.self) -> [T] {
-        tags.compactMap { $0 as? T }
+        tags.compactMap { $0.unerasedTag as? T }
+    }
+
+    public func onlyTagOfType<T: Tagging>(_: T.Type = T.self) throws -> T {
+        try tagsOfType(T.self).only()
+    }
+
+    // MARK: where
+
+    public func tagsWhere(_ filter: (AnyTag) -> Bool) -> [AnyTag] {
+        tags.filter(filter)
     }
 
     public func tagsOfTypeWhere<T: Tagging>(_: T.Type = T.self,
                                             _ filter: (T) -> Bool) -> [T]
     {
-        tags.compactMap {
-            guard let t = $0 as? T,
-                filter(t)
-            else {
-                return nil
-            }
-            return t
-        }
+        tagsOfType(T.self).filter(filter)
     }
 
-    public func tagsofType(_ filter: (AnyTag) -> Bool) -> [AnyTag] {
-        tags.filter(filter)
-    }
+    // MARK: changing tags
 
     public func settingTags<S: Sequence>(_ tags: S) -> Agent where S.Element == AnyTag {
         .init(id, tags)
@@ -65,14 +68,5 @@ extension Agent {
 
     public func addingTag(_ tag: AnyTag) -> Agent {
         addingTags([tag])
-    }
-
-    public var description: String {
-        "agent: \(id) tags: \(tags.map { "\($0)" }.sorted().joined(separator: ","))"
-    }
-
-    public static func == (lhs: Agent, rhs: Agent) -> Bool {
-        lhs.id == rhs.id &&
-            lhs.tags == rhs.tags
     }
 }

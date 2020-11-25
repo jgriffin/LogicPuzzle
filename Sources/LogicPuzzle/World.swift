@@ -23,6 +23,18 @@ extension World: CustomStringConvertible {
     public func agentsWith(_ tag: AnyTag) -> [Agent] {
         agents.values.filter { $0.hasTag(tag) }
     }
+
+    public func agentsWith<T: Tagging & Hashable>(_ tag: T) -> [Agent] {
+        agents.values.filter { $0.hasTag(tag.erasedTag) }
+    }
+
+    public func onlyAgentWith(_ tag: AnyTag) throws -> Agent {
+        try agentsWith(tag).only()
+    }
+
+    public func onlyAgentWith<T: Tagging & Hashable>(_ tag: T) throws -> Agent {
+        try onlyAgentWith(tag.erasedTag)
+    }
 }
 
 extension World: Equatable {
