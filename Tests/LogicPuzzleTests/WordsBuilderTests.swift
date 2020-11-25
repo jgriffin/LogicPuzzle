@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import LogicPuzzle
 
 final class WorldsBuilderTests: XCTestCase {
     func testNoAgents() {

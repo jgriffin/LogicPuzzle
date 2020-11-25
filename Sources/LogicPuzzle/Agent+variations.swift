@@ -8,7 +8,7 @@
 import Foundation
 
 extension Agent {
-    func variationsFrom(_ predicates: [Predicate.ID]) -> [Agent] {
+    public func variationsFrom(_ predicates: [Predicate.ID]) -> [Agent] {
         let predicateCombinations = (0 ... predicates.count)
             .flatMap { count in
                 predicates.combinations(ofCount: count)
@@ -19,7 +19,7 @@ extension Agent {
         }
     }
 
-    func variationsFrom(_ predicates: [Predicate]) -> [Agent] {
+    public func variationsFrom(_ predicates: [Predicate]) -> [Agent] {
         variationsFrom(predicates.map(\.id))
     }
 }

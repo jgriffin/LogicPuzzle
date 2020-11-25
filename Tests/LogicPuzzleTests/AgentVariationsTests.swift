@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import LogicPuzzle
 
 final class AgentVariationsTests: XCTestCase {
     func testNoVariation() {

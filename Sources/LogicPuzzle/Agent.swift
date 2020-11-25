@@ -7,11 +7,11 @@
 
 import Foundation
 
-public class Agent: Identifiable, Equatable, CustomStringConvertible {
+public struct Agent: Identifiable, Hashable, CustomStringConvertible {
     public typealias ID = String
 
-    public var id: ID
-    public var predicates: Set<Predicate.ID>
+    public let id: ID
+    public let predicates: Set<Predicate.ID>
 
     public init(_ id: ID,
                 _ predicates: [Predicate.ID] = [])
@@ -41,8 +41,8 @@ public class Agent: Identifiable, Equatable, CustomStringConvertible {
 extension Agent {
     // MARK: Full Predicate conveniences
 
-    public convenience init(_ id: ID,
-                            _ predicates: [Predicate])
+    public init(_ id: ID,
+                _ predicates: [Predicate])
     {
         self.init(id, predicates.map(\.id))
     }
